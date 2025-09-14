@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perseverance - RedView</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/rover.css">
+    <link rel="stylesheet" href="css/modal.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>RedView</h1>
+                <span class="nav-subtitle">Mars Mission Explorer</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/perseverance" class="active">Perseverance</a></li>
+                <li><a href="/curiosity">Curiosity</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-container">
+        <section class="rover-header">
+            <div class="rover-header-content">
+                <div class="rover-info-main">
+                    <h1>Perseverance</h1>
+                    <p class="rover-mission">Mars 2020 Mission</p>
+                    <span class="rover-status active">Active</span>
+                    <p class="rover-description">
+                        NASA's Perseverance rover is searching for signs of ancient microbial life on Mars and collecting rock and soil samples for future return to Earth.
+                    </p>
+                    <div class="rover-quick-stats">
+                        <div class="quick-stat">
+                            <span class="stat-number">2021</span>
+                            <span class="stat-label">Landing Year</span>
+                        </div>
+                        <div class="quick-stat">
+                            <span class="stat-number">1000+</span>
+                            <span class="stat-label">Mission Days</span>
+                        </div>
+                        <div class="quick-stat">
+                            <span class="stat-number">24</span>
+                            <span class="stat-label">Samples Collected</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="rover-image-header perseverance-header-bg"></div>
+            </div>
+        </section>
+
+        <section class="controls-section">
+            <div class="controls-container">
+                <h2>Image Gallery</h2>
+                <div class="controls-grid">
+                    <div class="control-group">
+                        <label for="sol-input">Sol (Mission Day):</label>
+                        <input type="number" id="sol-input" min="1" placeholder="Enter sol number">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="camera-select">Camera:</label>
+                        <select id="camera-select">
+                            <option value="">All Cameras</option>
+                            <option value="FRONT_HAZCAM_LEFT_A">Front Hazard Left</option>
+                            <option value="FRONT_HAZCAM_RIGHT_A">Front Hazard Right</option>
+                            <option value="REAR_HAZCAM_LEFT">Rear Hazard Left</option>
+                            <option value="REAR_HAZCAM_RIGHT">Rear Hazard Right</option>
+                            <option value="MASTCAM_LEFT">Mastcam Left</option>
+                            <option value="MASTCAM_RIGHT">Mastcam Right</option>
+                            <option value="MARDI">Descent Imager</option>
+                            <option value="MAHLI">Hand Lens Imager</option>
+                            <option value="SUPERCAM_RMI">SuperCam RMI</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-buttons">
+                        <button id="search-btn" class="btn btn-primary">Search Images</button>
+                        <button id="latest-btn" class="btn btn-secondary">Get Latest</button>
+                        <button id="clear-btn" class="btn btn-tertiary">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="results-section">
+            <div class="results-header">
+                <h3 id="results-title">Latest Images</h3>
+                <div class="results-info">
+                    <span id="results-count">Loading...</span>
+                    <div class="view-toggle">
+                        <button id="grid-view" class="view-btn active">Grid</button>
+                        <button id="list-view" class="view-btn">List</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="loading-spinner" id="loading">
+                <div class="spinner"></div>
+                <p>Loading images from Mars...</p>
+            </div>
+            
+            <div class="error-message" id="error" style="display: none;">
+                <p>Unable to load images. Please try again.</p>
+            </div>
+            
+            <div class="images-container" id="images-container">
+                <!-- Images will be dynamically loaded here -->
+            </div>
+            
+            <div class="load-more-container" id="load-more-container" style="display: none;">
+                <button id="load-more-btn" class="btn btn-secondary">Load More Images</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Image Modal -->
+    <div id="image-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <div class="modal-body">
+                <div class="modal-image-container">
+                    <img id="modal-image" src="" alt="Mars Image">
+                </div>
+                <div class="modal-info">
+                    <div class="image-meta">
+                        <h3 id="modal-title">Image Details</h3>
+                        <div class="meta-grid">
+                            <div class="meta-item">
+                                <span class="meta-label">Sol:</span>
+                                <span class="meta-value" id="modal-sol">-</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Camera:</span>
+                                <span class="meta-value" id="modal-camera">-</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Earth Date:</span>
+                                <span class="meta-value" id="modal-date">-</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Status:</span>
+                                <span class="meta-value" id="modal-status">-</span>
+                            </div>
+                        </div>
+                        <div class="modal-actions">
+                            <button id="download-btn" class="btn btn-primary">Download Image</button>
+                            <button id="view-full-btn" class="btn btn-secondary">View Full Size</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 RedView - Mars Mission Explorer. Data provided by NASA APIs.</p>
+            <p>Perseverance mission data updated in real-time</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/imageModal.js"></script>
+    <script src="js/perseverance.js"></script>
+</body>
+</html>

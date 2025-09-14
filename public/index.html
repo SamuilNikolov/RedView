@@ -1,21 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>RedView: Perseverance Rover Path on Mars</title>
-    <!-- Cesium CSS -->
-    <link href="https://cesium.com/downloads/cesiumjs/releases/1.133/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
-    <style>
-        html, body, #cesiumContainer {
-            width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RedView - Mars Mission Explorer</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <div id="cesiumContainer"></div>
-    <!-- Cesium JS -->
-    <script src="https://cesium.com/downloads/cesiumjs/releases/1.133/Build/Cesium/Cesium.js"></script>
-    <!-- Project script -->
-    <script src="scripts/perseverance.js"></script>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>RedView</h1>
+                <span class="nav-subtitle">Mars Mission Explorer</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/" class="active">Home</a></li>
+                <li><a href="/perseverance">Perseverance</a></li>
+                <li><a href="/curiosity">Curiosity</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-container">
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Explore Mars Through the Eyes of Rovers</h2>
+                <p>Access real-time data and imagery from NASA's Mars exploration missions. Discover the Red Planet through interactive visualizations and comprehensive mission data.</p>
+            </div>
+            <div class="hero-image">
+                <div class="mars-surface"></div>
+            </div>
+        </section>
+
+        <section class="rovers-section">
+            <h3>Mission Data</h3>
+            <div class="rovers-grid">
+                <div class="rover-card" onclick="navigateToRover('perseverance')">
+                    <div class="rover-image perseverance-bg"></div>
+                    <div class="rover-info">
+                        <h4>Perseverance</h4>
+                        <p>Mars 2020 Mission</p>
+                        <span class="rover-status active">Active</span>
+                        <div class="rover-stats">
+                            <div class="stat">
+                                <span class="stat-label">Landing:</span>
+                                <span class="stat-value">Feb 18, 2021</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Location:</span>
+                                <span class="stat-value">Jezero Crater</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rover-card" onclick="navigateToRover('curiosity')">
+                    <div class="rover-image curiosity-bg"></div>
+                    <div class="rover-info">
+                        <h4>Curiosity</h4>
+                        <p>Mars Science Laboratory</p>
+                        <span class="rover-status active">Active</span>
+                        <div class="rover-stats">
+                            <div class="stat">
+                                <span class="stat-label">Landing:</span>
+                                <span class="stat-value">Aug 6, 2012</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Location:</span>
+                                <span class="stat-value">Gale Crater</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features-section">
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon">📸</div>
+                    <h4>High-Resolution Imagery</h4>
+                    <p>Browse thousands of images captured by rover cameras across multiple mission sols</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🔍</div>
+                    <h4>Advanced Filtering</h4>
+                    <p>Filter by camera type, sol date, and mission-specific parameters</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📊</div>
+                    <h4>Real-Time Data</h4>
+                    <p>Access the latest mission telemetry and environmental data directly from NASA APIs</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 RedView - Mars Mission Explorer. Data provided by NASA APIs.</p>
+            <p>Built by Team Martians for SE 300</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
 </body>
 </html>

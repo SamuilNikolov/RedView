@@ -1,0 +1,29 @@
+/* css/image-styles.css */
+
+/* General rule for responsive images */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Styles for Hero, Header, and Card containers to contain the images */
+.hero-image,
+.rover-image-header,
+.rover-image {
+  overflow: hidden; /* Prevents image from spilling out */
+  position: relative;
+  height: 100%; /* Ensure container takes up the full height */
+}
+
+/* Core style to make images behave like a background image.
+  This will cover the entire container without distorting the aspect ratio.
+*/
+.hero-image img,
+.rover-image-header img,
+.rover-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;       /* Scales the image to cover the container */
+  object-position: center; /* Centers the image within the frame */
+}
