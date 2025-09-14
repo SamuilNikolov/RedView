@@ -1,22 +1,18 @@
+// Express server setup
 const express = require('express');
+const path = require('path');
 const app = express();
-const port = 3000;
+const PORT = 3000;
 
-// Sample endpoint 1: Home page with placeholder
-app.get('/', (req, res) => {
-    res.send('<h1>Welcome to RedView - Mars Exploration App</h1><p>Placeholder content: Explore Mars data here.</p>');
+// Serve static files from public directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Route for /perseverance: serve the HTML page
+app.get('/perseverance', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Sample endpoint 2: About page with placeholder
-app.get('/about', (req, res) => {
-    res.send('<h1>About RedView</h1><p>Placeholder: This app visualizes NASA Mars data using Cesium and APIs.</p>');
-});
-
-// Sample endpoint 3: Data page with placeholder JSON
-app.get('/data', (req, res) => {
-    res.json({ message: 'Placeholder Mars data', rover: 'Curiosity', location: 'Gale Crater' });
-});
-
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}/perseverance`);
 });
