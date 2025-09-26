@@ -4,99 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RedView - Mars Rover Explorer</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .container {
-            text-align: center;
-            background: white;
-            padding: 3rem;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            max-width: 600px;
-            width: 90%;
-        }
-        
-        h1 {
-            color: #333;
-            margin-bottom: 0.5rem;
-            font-size: 2.5rem;
-        }
-        
-        .subtitle {
-            color: #666;
-            margin-bottom: 3rem;
-            font-size: 1.1rem;
-        }
-        
-        .rover-buttons {
-            display: flex;
-            gap: 2rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .rover-btn {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-            color: white;
-            border: none;
-            padding: 1.5rem 2.5rem;
-            border-radius: 15px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            min-width: 200px;
-        }
-        
-        .rover-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-        
-        .rover-btn.curiosity {
-            background: linear-gradient(45deg, #4ecdc4, #44a08d);
-        }
-        
-        .rover-btn.perseverance {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-        }
-        
-        .footer {
-            margin-top: 3rem;
-            color: #888;
-            font-size: 0.9rem;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <div class="container">
-        <h1>RedView</h1>
-        <p class="subtitle">Explore Mars through the eyes of our rovers</p>
+<body class="mars-bg min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="text-center mb-12 fade-in-up">
+            <h1 class="text-5xl md:text-6xl font-bold text-white mb-4 tracking-wider">
+                RedView
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-200 font-light tracking-wide">
+                Explore Mars through the eyes of our rovers
+            </p>
+        </header>
         
-        <div class="rover-buttons">
-            <a href="/curiosity" class="rover-btn curiosity">
-                🚀 Curiosity
+        <!-- Rover Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12">
+            <!-- Curiosity Card -->
+            <a href="/curiosity" class="rover-card group">
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden h-64 relative">
+                    <div class="h-40 bg-cover bg-center" 
+                         style="background-image: url('https://d2cbg94ubxgsnp.cloudfront.net/Pictures/2000xAny/5/8/7/540587_pia14165orig_655728_crop_crop_crop.jpg');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Curiosity</h3>
+                        <p class="text-gray-600 text-sm uppercase tracking-wider">Mars Science Laboratory</p>
+                        <div class="mt-4 flex items-center text-sm text-gray-500">
+                            <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                            Active since 2012
+                        </div>
+                    </div>
+                </div>
             </a>
-            <a href="/perseverance" class="rover-btn perseverance">
-                🔴 Perseverance
+            
+            <!-- Perseverance Card -->
+            <a href="/perseverance" class="rover-card group">
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden h-64 relative">
+                    <div class="h-40 bg-cover bg-center" 
+                         style="background-image: url('https://assets.science.nasa.gov/content/dam/science/psd/mars/resources/detail_files/2/5/25790_First_selfie-1200.gif');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Perseverance</h3>
+                        <p class="text-gray-600 text-sm uppercase tracking-wider">Mars 2020 Mission</p>
+                        <div class="mt-4 flex items-center text-sm text-gray-500">
+                            <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                            Active since 2021
+                        </div>
+                    </div>
+                </div>
             </a>
         </div>
         
-        <div class="footer">
-            <p>Built with ❤️ for Mars exploration</p>
-        </div>
+        <!-- Footer -->
+        <footer class="text-center text-gray-300">
+            <p class="text-sm">Built for Mars exploration and scientific discovery</p>
+        </footer>
     </div>
 </body>
 </html>

@@ -4,86 +4,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perseverance - RedView</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .container {
-            text-align: center;
-            background: white;
-            padding: 3rem;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            max-width: 600px;
-            width: 90%;
-        }
-        
-        h1 {
-            color: #333;
-            margin-bottom: 0.5rem;
-            font-size: 2.5rem;
-        }
-        
-        .rover-name {
-            color: #ff6b6b;
-            font-weight: bold;
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .placeholder {
-            background: #f8f9fa;
-            padding: 2rem;
-            border-radius: 10px;
-            border: 2px dashed #dee2e6;
-            margin: 2rem 0;
-        }
-        
-        .back-btn {
-            background: #6c757d;
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.3s ease;
-        }
-        
-        .back-btn:hover {
-            background: #5a6268;
-            transform: translateY(-2px);
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <div class="container">
-        <h1>🔴 Perseverance</h1>
-        <p class="rover-name">Mars 2020 Mission</p>
+<body class="mars-bg min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Navigation -->
+        <nav class="mb-8">
+            <a href="/" class="inline-flex items-center text-white hover:text-gray-300 transition-colors">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Back to Home
+            </a>
+        </nav>
         
-        <div class="placeholder">
-            <h3>Coming Soon!</h3>
-            <p>This page will display Perseverance rover images and data.</p>
-            <p>Features will include:</p>
-            <ul style="text-align: left; display: inline-block;">
-                <li>Image gallery</li>
-                <li>Search by mission day (sol)</li>
-                <li>Camera filters</li>
-                <li>Image details modal</li>
-            </ul>
+        <!-- Rover Header -->
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden mb-8">
+            <div class="h-64 md:h-80 bg-cover bg-center relative" 
+                 style="background-image: url('https://www.maxongroup.com/assets/public/caas/v1/media/81412/data/2381cc709a955dcb18f9d2e2bd434c05/landscape_ratio16x9/1240/photo-blog-perseverance.png');">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                <div class="absolute bottom-6 left-6 text-white">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-2">Perseverance</h1>
+                    <p class="text-xl text-gray-200">Mars 2020 Mission</p>
+                </div>
+            </div>
+            
+            <div class="p-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-gray-900">2021</div>
+                        <div class="text-sm text-gray-600 uppercase tracking-wider">Landing Year</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-gray-900">1000+</div>
+                        <div class="text-sm text-gray-600 uppercase tracking-wider">Mission Days</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-gray-900">24</div>
+                        <div class="text-sm text-gray-600 uppercase tracking-wider">Samples Collected</div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 rounded-xl p-6 border-2 border-dashed border-gray-300">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Mission Overview</h3>
+                    <p class="text-gray-700 mb-4">
+                        NASA's Perseverance rover is searching for signs of ancient microbial life on Mars and collecting rock and soil samples for future return to Earth.
+                    </p>
+                    
+                    <h4 class="text-xl font-semibold text-gray-900 mb-3">Coming Soon</h4>
+                    <p class="text-gray-600 mb-4">This page will display Perseverance rover images and data.</p>
+                    
+                    <ul class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600">
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            High-resolution image gallery
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Search by mission day (sol)
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Camera type filters
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Sample collection tracking
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="text-center mt-8">
+                    <a href="/" class="inline-flex items-center px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                        Return to Home
+                    </a>
+                </div>
+            </div>
         </div>
-        
-        <a href="/" class="back-btn">← Back to Home</a>
     </div>
 </body>
 </html>

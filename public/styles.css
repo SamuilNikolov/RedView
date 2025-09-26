@@ -1,0 +1,54 @@
+/**
+ * RedView - Clean Mars Theme with Tailwind
+ * 
+ * REQUIREMENT: Responsive design with real Mars imagery
+ * TASK: Create clean, professional styling using Tailwind CSS
+ * METHOD: Use Tailwind utilities with real NASA Mars images
+ */
+
+@import 'https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css';
+
+/* Custom Mars Colors */
+:root {
+    --mars-red: #a52a2a;
+    --mars-orange: #cd853f;
+    --mars-brown: #8b4513;
+    --mars-sand: #daa520;
+    --mars-dark: #2f1b14;
+}
+
+/* Mars Background with Real Image */
+.mars-bg {
+    background-image: 
+        linear-gradient(rgba(47, 27, 20, 0.7), rgba(47, 27, 20, 0.8)),
+        url('https://dubaiastronomy.com/wp-content/uploads/2019/02/Mars-Horizon.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* Rover Card Hover Effects */
+.rover-card {
+    transition: all 0.3s ease;
+}
+
+.rover-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+/* Custom Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
