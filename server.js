@@ -28,6 +28,6 @@ app.get('/curiosity', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'curiosity.html'));
 });
 
-app.listen(PORT, () => {
-    console.log(`RedView server running on port ${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`RedView server running at http://0.0.0.0:${PORT}`);
 });
