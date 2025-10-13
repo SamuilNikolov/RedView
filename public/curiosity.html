@@ -5,6 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Curiosity - RedView</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Responsive iframe helper (16:9) */
+        .iframe-wrap {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 */
+            overflow: hidden;
+            border-radius: 1rem; /* rounded-2xl */
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); /* shadow-2xl */
+            border: 1px solid rgba(255,255,255,0.08);
+            background: #0b0b0b;
+        }
+        .iframe-wrap iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        .glass {
+            background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+    </style>
 </head>
 <body class="mars-bg min-h-screen">
     <div class="container mx-auto px-4 py-8">
@@ -44,6 +69,36 @@
                         <div class="text-sm text-gray-600 uppercase tracking-wider">Distance Traveled</div>
                     </div>
                 </div>
+
+                <!-- Embedded ArcGIS Scene (ABOVE image search) -->
+                <section class="mb-8">
+                    <div class="glass rounded-2xl p-5 md:p-6 mb-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-2xl font-bold text-gray-900">Interactive Path Viewer</h3>
+                                <p class="text-gray-700">Explore Curiosity’s traverse in 3D on Mars terrain.</p>
+                            </div>
+                            <a href="arcgis-curiosity.html" class="hidden md:inline-flex items-center px-3 py-2 rounded-lg bg-gray-900 text-white hover:bg-gray-800 transition-colors">
+                                Open Fullscreen
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 3h7m0 0v7m0-7L10 14"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="iframe-wrap">
+                        <iframe
+                            src="arcgis-curiosity.html"
+                            title="Curiosity Rover Path - ArcGIS 3D Scene"
+                            loading="lazy"
+                            allowfullscreen
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-3 text-center">
+                        Data sources: NASA / JPL / USGS / Esri • Use mouse/touch to pan, tilt, and zoom
+                    </p>
+                </section>
                 
                 <!-- Image Gallery Section -->
                 <div class="bg-gray-50 rounded-xl p-6 border-2 border-dashed border-gray-300">
