@@ -44,7 +44,35 @@
                         <div class="text-sm text-gray-600 uppercase tracking-wider">Samples Collected</div>
                     </div>
                 </div>
-                
+                                <!-- Embedded ArcGIS Scene (ABOVE image search) -->
+                <section class="mb-8">
+                    <div class="glass rounded-2xl p-5 md:p-6 mb-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-2xl font-bold text-gray-900">Interactive Path Viewer</h3>
+                                <p class="text-gray-700">Explore Perseverance's traverse in 3D on Mars terrain.</p>
+                            </div>
+                            <a href="arcgis-perseverance.html" class="hidden md:inline-flex items-center px-3 py-2 rounded-lg bg-gray-900 text-white hover:bg-gray-800 transition-colors">
+                                Open Fullscreen
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 3h7m0 0v7m0-7L10 14"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="iframe-wrap">
+                        <iframe
+                            src="arcgis-perseverance.html"
+                            title="Perseverance Rover Path - ArcGIS 3D Scene"
+                            loading="lazy"
+                            allowfullscreen
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-3 text-center">
+                        Data sources: NASA / JPL / USGS / Esri • Use mouse/touch to pan, tilt, and zoom
+                    </p>
+                </section>
                 <div class="bg-gray-50 rounded-xl p-6 border-2 border-dashed border-gray-300">
                     <h3 class="text-2xl font-bold text-gray-900 mb-4">Mission Overview</h3>
                     <p class="text-gray-700 mb-4">
