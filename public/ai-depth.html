@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Depth - 3D Terrain Visualization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, Arial, sans-serif;
+            background: #0b0b0b;
+            color: #eee;
+            overflow: hidden;
+        }
+
+        #container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        #controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(17, 17, 17, 0.95);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            max-width: 350px;
+        }
+
+        #controls h1 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            color: #fff;
+        }
+
+        #fileInput {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            background: #222;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #eee;
+            cursor: pointer;
+        }
+
+        #fileInput::file-selector-button {
+            background: #333;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        #fileInput::file-selector-button:hover {
+            background: #444;
+        }
+
+        #generateBtn {
+            width: 100%;
+            padding: 12px;
+            background: #4a90e2;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        #generateBtn:hover:not(:disabled) {
+            background: #5aa0f2;
+        }
+
+        #generateBtn:disabled {
+            background: #333;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        #status {
+            margin-top: 12px;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            display: none;
+        }
+
+        #status.info {
+            background: #1a4d7a;
+            border: 1px solid #2a6da0;
+            display: block;
+        }
+
+        #status.error {
+            background: #7a1a1a;
+            border: 1px solid #a02a2a;
+            display: block;
+        }
+
+        #status.success {
+            background: #1a7a3a;
+            border: 1px solid #2aa04a;
+            display: block;
+        }
+
+        .preview-panel {
+            display: none;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(17, 17, 17, 0.95);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 16px;
+            backdrop-filter: blur(10px);
+            max-width: 300px;
+            z-index: 100;
+        }
+
+        .preview-panel.active {
+            display: block;
+        }
+
+        .preview-panel h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+
+        .preview-panel img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid #222;
+        }
+
+        @media (max-width: 768px) {
+            #controls {
+                max-width: calc(100vw - 40px);
+                top: 10px;
+                left: 10px;
+            }
+
+            .preview-panel {
+                top: auto;
+                right: 10px;
+                bottom: 10px;
+                max-width: calc(100vw - 40px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+
+    <div id="controls">
+        <h1>AI Depth Map</h1>
+        <input type="file" id="fileInput" accept="image/*">
+        <button id="generateBtn" disabled>Generate 3D Depth Map</button>
+        <div id="status"></div>
+    </div>
+
+    <div class="preview-panel" id="previewPanel">
+        <h3>Depth Map Preview</h3>
+        <img id="depthPreview" alt="Depth preview">
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.167.1/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.167.1/examples/jsm/"
+            }
+        }
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // Set up Three.js scene
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x050505);
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        document.getElementById('container').appendChild(renderer.domElement);
+
+        // Add orbit controls
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.25;
+        controls.screenSpacePanning = false;
+        controls.minDistance = 5;
+        controls.maxDistance = 100;
+
+        // Add lighting
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1.2);
+        directionalLight.position.set(5, 10, 5);
+        scene.add(directionalLight);
+        
+        const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
+        scene.add(ambientLight);
+
+        // Add subtle rim light for better definition
+        const rimLight = new THREE.DirectionalLight(0x8888ff, 0.5);
+        rimLight.position.set(-5, 5, -5);
+        scene.add(rimLight);
+
+        // Camera position
+        camera.position.set(0, 15, 25);
+        camera.lookAt(0, 0, 0);
+
+        // Grid helper (optional)
+        const gridHelper = new THREE.GridHelper(30, 30, 0x333333, 0x222222);
+        scene.add(gridHelper);
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // UI elements
+        const fileInput = document.getElementById('fileInput');
+        const generateBtn = document.getElementById('generateBtn');
+        const status = document.getElementById('status');
+        const depthPreview = document.getElementById('depthPreview');
+        const previewPanel = document.getElementById('previewPanel');
+        let originalTextureImage = null;
+
+        // Update button state when file is selected
+        fileInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            generateBtn.disabled = !file;
+            if (file) {
+                // Preview the selected image
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    originalTextureImage = new Image();
+                    originalTextureImage.src = e.target.result;
+                    showStatus('Image selected. Click "Generate 3D Depth Map" to process.', 'info');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Generate depth map
+        generateBtn.addEventListener('click', async function() {
+            const file = fileInput.files[0];
+            if (!file) {
+                showStatus('Please select an image first.', 'error');
+                return;
+            }
+
+            generateBtn.disabled = true;
+            generateBtn.textContent = 'Processing...';
+            showStatus('Processing image with AI depth estimation...', 'info');
+
+            const formData = new FormData();
+            formData.append('image', file);
+
+            try {
+                const response = await fetch('/api/ai-depth', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                // Load depth map preview
+                depthPreview.src = 'data:image/png;base64,' + data.depth_map;
+                previewPanel.classList.add('active');
+
+                // Create 3D terrain
+                await create3DTerrain(data.depth_map, originalTextureImage);
+
+                showStatus('3D terrain generated successfully! Use mouse to rotate, zoom, and pan.', 'success');
+            } catch (error) {
+                console.error('Error:', error);
+                showStatus(`Error: ${error.message}`, 'error');
+            } finally {
+                generateBtn.disabled = false;
+                generateBtn.textContent = 'Generate 3D Depth Map';
+            }
+        });
+
+        async function create3DTerrain(depthMapBase64, textureImage) {
+            return new Promise((resolve, reject) => {
+                // Load depth map
+                const depthImage = new Image();
+                depthImage.src = 'data:image/png;base64,' + depthMapBase64;
+                
+                depthImage.onload = function() {
+                    try {
+                        // Create canvas to read pixel data
+                        const canvas = document.createElement('canvas');
+                        canvas.width = depthImage.width;
+                        canvas.height = depthImage.height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(depthImage, 0, 0);
+                        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+
+                        // Create terrain geometry with high resolution
+                        const width = depthImage.width;
+                        const height = depthImage.height;
+                        
+                        // Limit resolution for performance (max 512x512 segments)
+                        const maxSegments = 512;
+                        const segmentsX = Math.min(width, maxSegments);
+                        const segmentsY = Math.min(height, maxSegments);
+                        
+                        const geometry = new THREE.PlaneGeometry(20, 20, segmentsX - 1, segmentsY - 1);
+                        const vertices = geometry.attributes.position.array;
+
+                        // Apply depth map to vertices
+                        const xStep = width / segmentsX;
+                        const yStep = height / segmentsY;
+                        const depthScale = 5; // Height multiplier
+                        
+                        for (let y = 0; y < segmentsY; y++) {
+                            for (let x = 0; x < segmentsX; x++) {
+                                const pixelX = Math.floor(x * xStep);
+                                const pixelY = Math.floor(y * yStep);
+                                const pixelIndex = (pixelY * width + pixelX) * 4;
+                                const depth = imageData[pixelIndex] / 255.0; // Normalize 0-1
+                                
+                                const vertexIndex = (y * segmentsX + x) * 3;
+                                // Invert depth so closer objects are higher
+                                vertices[vertexIndex + 2] = (1 - depth) * depthScale;
+                            }
+                        }
+                        
+                        geometry.attributes.position.needsUpdate = true;
+                        geometry.computeVertexNormals();
+
+                        // Create texture from original image
+                        const texture = new THREE.TextureLoader().load(textureImage.src);
+                        texture.wrapS = THREE.RepeatWrapping;
+                        texture.wrapT = THREE.RepeatWrapping;
+                        texture.minFilter = THREE.LinearFilter;
+                        texture.magFilter = THREE.LinearFilter;
+
+                        // Create material with texture
+                        const material = new THREE.MeshStandardMaterial({
+                            map: texture,
+                            roughness: 0.8,
+                            metalness: 0.2,
+                            flatShading: false
+                        });
+                        
+                        const terrain = new THREE.Mesh(geometry, material);
+                        terrain.rotation.x = -Math.PI / 2; // Rotate to lie flat
+
+                        // Clear previous terrain (keep grid and lights)
+                        scene.children.forEach(child => {
+                            if (child instanceof THREE.Mesh && child !== gridHelper) {
+                                scene.remove(child);
+                            }
+                        });
+
+                        // Add new terrain
+                        scene.add(terrain);
+                        
+                        // Center camera on terrain
+                        camera.position.set(0, 20, 30);
+                        camera.lookAt(0, 0, 0);
+                        controls.target.set(0, 0, 0);
+                        controls.update();
+
+                        resolve();
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+
+                depthImage.onerror = function() {
+                    reject(new Error('Failed to load depth map image'));
+                };
+            });
+        }
+
+        function showStatus(message, type) {
+            status.textContent = message;
+            status.className = type;
+            
+            if (type === 'success' || type === 'error') {
+                setTimeout(() => {
+                    status.className = '';
+                    status.style.display = 'none';
+                }, 5000);
+            }
+        }
+    </script>
+</body>
+</html>
