@@ -1,125 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perseverance - RedView</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perseverance - RedView</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+    /* match Curiosity page helpers */
+    .iframe-wrap {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 */
+      overflow: hidden;
+      border-radius: 1rem; /* rounded-2xl */
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); /* shadow-2xl */
+      border: 1px solid rgba(255,255,255,0.08);
+      background: #0b0b0b;
+    }
+    .iframe-wrap iframe {
+      position: absolute; inset: 0; width: 100%; height: 100%; border: 0;
+    }
+    .glass {
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+  </style>
 </head>
 <body class="mars-bg min-h-screen">
-    <div class="container mx-auto px-4 py-8">
-        <!-- Navigation -->
-        <nav class="mb-8">
-            <a href="/" class="inline-flex items-center text-white hover:text-gray-300 transition-colors">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                </svg>
-                Back to Home
-            </a>
-        </nav>
-        
-        <!-- Rover Header -->
-        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden mb-8">
-            <div class="h-64 md:h-80 bg-cover bg-center relative" 
-                 style="background-image: url('https://www.maxongroup.com/assets/public/caas/v1/media/81412/data/2381cc709a955dcb18f9d2e2bd434c05/landscape_ratio16x9/1240/photo-blog-perseverance.png');">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div class="absolute bottom-6 left-6 text-white">
-                    <h1 class="text-4xl md:text-5xl font-bold mb-2">Perseverance</h1>
-                    <p class="text-xl text-gray-200">Mars 2020 Mission</p>
-                </div>
-            </div>
-            
-            <div class="p-8">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-gray-900">2021</div>
-                        <div class="text-sm text-gray-600 uppercase tracking-wider">Landing Year</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-gray-900">1000+</div>
-                        <div class="text-sm text-gray-600 uppercase tracking-wider">Mission Days</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-gray-900">24</div>
-                        <div class="text-sm text-gray-600 uppercase tracking-wider">Samples Collected</div>
-                    </div>
-                </div>
-                                <!-- Embedded ArcGIS Scene (ABOVE image search) -->
-                <section class="mb-8">
-                    <div class="glass rounded-2xl p-5 md:p-6 mb-4">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <h3 class="text-2xl font-bold text-gray-900">Interactive Path Viewer</h3>
-                                <p class="text-gray-700">Explore Perseverance's traverse in 3D on Mars terrain.</p>
-                            </div>
-                            <a href="arcgis-perseverance.html" class="hidden md:inline-flex items-center px-3 py-2 rounded-lg bg-gray-900 text-white hover:bg-gray-800 transition-colors">
-                                Open Fullscreen
-                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 3h7m0 0v7m0-7L10 14"></path>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="iframe-wrap">
-                        <iframe
-                            src="arcgis-perseverance.html"
-                            title="Perseverance Rover Path - ArcGIS 3D Scene"
-                            loading="lazy"
-                            allowfullscreen
-                            referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
-                    </div>
-                    <p class="text-xs text-gray-500 mt-3 text-center">
-                        Data sources: NASA / JPL / USGS / Esri • Use mouse/touch to pan, tilt, and zoom
-                    </p>
-                </section>
-                <div class="bg-gray-50 rounded-xl p-6 border-2 border-dashed border-gray-300">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Mission Overview</h3>
-                    <p class="text-gray-700 mb-4">
-                        NASA's Perseverance rover is searching for signs of ancient microbial life on Mars and collecting rock and soil samples for future return to Earth.
-                    </p>
-                    
-                    <h4 class="text-xl font-semibold text-gray-900 mb-3">Coming Soon</h4>
-                    <p class="text-gray-600 mb-4">This page will display Perseverance rover images and data.</p>
-                    
-                    <ul class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600">
-                        <li class="flex items-center">
-                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            High-resolution image gallery
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            Search by mission day (sol)
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            Camera type filters
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            Sample collection tracking
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="text-center mt-8">
-                    <a href="/" class="inline-flex items-center px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                        </svg>
-                        Return to Home
-                    </a>
-                </div>
-            </div>
+  <div class="container mx-auto px-4 py-8">
+    <!-- Navigation -->
+    <nav class="mb-8">
+      <a href="/" class="inline-flex items-center text-white hover:text-gray-300 transition-colors">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        Back to Home
+      </a>
+    </nav>
+
+    <!-- Rover Header -->
+    <div class="bg-white rounded-2xl shadow-2xl overflow-hidden mb-8">
+      <div class="h-64 md:h-80 bg-cover bg-center relative"
+           style="background-image: url('https://www.maxongroup.com/assets/public/caas/v1/media/81412/data/2381cc709a955dcb18f9d2e2bd434c05/landscape_ratio16x9/1240/photo-blog-perseverance.png');">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+        <div class="absolute bottom-6 left-6 text-white">
+          <h1 class="text-4xl md:text-5xl font-bold mb-2">Perseverance</h1>
+          <p class="text-xl text-gray-200">Mars 2020 Mission</p>
         </div>
+      </div>
+
+      <div class="p-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div class="text-center">
+            <div class="text-3xl font-bold text-gray-900">2021</div>
+            <div class="text-sm text-gray-600 uppercase tracking-wider">Landing Year</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl font-bold text-gray-900">1000+</div>
+            <div class="text-sm text-gray-600 uppercase tracking-wider">Mission Days</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl font-bold text-gray-900">24</div>
+            <div class="text-sm text-gray-600 uppercase tracking-wider">Samples Collected</div>
+          </div>
+        </div>
+
+        <!-- Embedded ArcGIS Scene (ABOVE image search) -->
+        <section class="mb-8">
+          <div class="glass rounded-2xl p-5 md:p-6 mb-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-2xl font-bold text-gray-900">Interactive Path Viewer</h3>
+                <p class="text-gray-700">Explore Perseverance’s traverse in 3D on Mars terrain.</p>
+              </div>
+              <a href="arcgis-perseverance.html" class="hidden md:inline-flex items-center px-3 py-2 rounded-lg bg-gray-900 text-white hover:bg-gray-800 transition-colors">
+                Open Fullscreen
+                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 3h7m0 0v7m0-7L10 14"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div class="iframe-wrap">
+            <iframe
+              src="arcgis-perseverance.html"
+              title="Perseverance Rover Path - ArcGIS 3D Scene"
+              loading="lazy"
+              allowfullscreen
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+          <p class="text-xs text-gray-500 mt-3 text-center">
+            Data sources: NASA / JPL / USGS / Esri • Use mouse/touch to pan, tilt, and zoom
+          </p>
+        </section>
+
+        <!-- Image Gallery Section -->
+        <div class="bg-gray-50 rounded-xl p-6 border-2 border-dashed border-gray-300">
+          <h3 class="text-2xl font-bold text-gray-900 mb-4">Latest Images from Perseverance</h3>
+          <p class="text-gray-700 mb-6">
+            NASA's Perseverance rover is investigating Jezero Crater, searching for signs of ancient life and caching samples for return to Earth.
+          </p>
+
+          <!-- Loading -->
+          <div id="loading" class="text-center py-8">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+            <p class="mt-2 text-gray-600">Loading latest images...</p>
+          </div>
+
+          <!-- Error -->
+          <div id="error" class="hidden text-center py-8">
+            <div class="text-red-500 mb-2">
+              <svg class="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+              </svg>
+            </div>
+            <p class="text-red-600 font-semibold">Failed to load images</p>
+            <p class="text-gray-600 mt-1" id="error-message">Please try again later.</p>
+            <button onclick="loadImages()" class="mt-4 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors">
+              Retry
+            </button>
+          </div>
+
+          <!-- Image Grid -->
+          <div id="image-grid" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- filled by JS -->
+          </div>
+        </div>
+
+        <div class="text-center mt-8">
+          <a href="/" class="inline-flex items-center px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            Return to Home
+          </a>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/apiService.js"></script>
+  <script>
+    // Use MarsRoverAPI if it exposes a Perseverance method; otherwise fetch directly.
+    const api = new MarsRoverAPI();
+    document.addEventListener('DOMContentLoaded', loadImages);
+
+    async function fetchLatest() {
+      if (typeof api.getLatestPerseveranceImages === 'function') {
+        return await api.getLatestPerseveranceImages();
+      }
+      const r = await fetch('/api/perseverance/latest');
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return await r.json();
+    }
+
+    async function loadImages() {
+      const loading = document.getElementById('loading');
+      const error = document.getElementById('error');
+      const grid = document.getElementById('image-grid');
+
+      loading.classList.remove('hidden');
+      error.classList.add('hidden');
+      grid.classList.add('hidden');
+
+      try {
+        const data = await fetchLatest();
+        if (data.latest_photos && data.latest_photos.length) {
+          displayImages(data.latest_photos);
+        } else {
+          throw new Error('No recent images found');
+        }
+      } catch (e) {
+        showError(e.message);
+      }
+    }
+
+    function displayImages(photos) {
+      document.getElementById('loading').classList.add('hidden');
+      const grid = document.getElementById('image-grid');
+      grid.innerHTML = '';
+
+      photos.forEach(p => grid.appendChild(createImageCard(p)));
+      grid.classList.remove('hidden');
+    }
+
+    function createImageCard(photo) {
+      const title = (photo.camera && (photo.camera.full_name || photo.camera.name)) || 'Unknown camera';
+      const dateText = photo.earth_date ? new Date(photo.earth_date).toLocaleDateString() : '—';
+
+      const card = document.createElement('div');
+      card.className = 'bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300';
+      card.innerHTML = `
+        <div class="aspect-w-16 aspect-h-12">
+          <img
+            src="${photo.img_src}"
+            alt="Mars surface image from ${title}"
+            class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+            loading="lazy"
+            onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzY2NjY2NiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIG5vdCBhdmFpbGFibGU8L3RleHQ+PC9zdmc+'"
+          >
+        </div>
+        <div class="p-3">
+          <h4 class="font-semibold text-gray-900 text-sm mb-1">${title}</h4>
+          <p class="text-xs text-gray-600">Sol ${photo.sol} • ${dateText}</p>
+        </div>
+      `;
+      return card;
+    }
+
+    function showError(message) {
+      document.getElementById('loading').classList.add('hidden');
+      document.getElementById('error-message').textContent = message;
+      document.getElementById('error').classList.remove('hidden');
+    }
+  </script>
 </body>
 </html>
