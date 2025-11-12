@@ -12,12 +12,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // ---------------------------
-// Static files
-// ---------------------------
-app.use(express.static('public'));
-
-// ---------------------------
-// Proxies (must be BEFORE body parsers)
+// Proxies (must be BEFORE static files and body parsers)
 // ---------------------------
 
 // Flask depth service proxy
@@ -42,20 +37,83 @@ app.post('/api/ai-depth', flaskProxy);
 app.options('/api/ai-depth', flaskProxy);
 
 // Rover media service proxy (Curiosity + Perseverance)
-app.use(
-  ['/api/curiosity', '/api/perseverance'],
-  createProxyMiddleware({
-    target: 'http://127.0.0.1:4001', // rover-media-service
+// When Express matches /api/curiosity, it strips the prefix from req.url
+// We need to restore it so the proxy forwards the full path to the target service
+const roverProxyConfig = {
+  target: 'http://127.0.0.1:4001',
+  changeOrigin: true,
+  logLevel: 'debug',
+  onProxyRes: (proxyRes, req) => {
+    console.log(`[PROXY] Response: ${proxyRes.statusCode} for ${req.url}`);
+  },
+  onError: (err, req, res) => {
+    console.error('[PROXY ERROR]', err.message);
+    if (!res.headersSent) {
+      res.status(502).json({ 
+        error: 'Rover media service unavailable on port 4001.',
+        details: err.message 
+      });
+    }
+  }
+};
+
+app.use('/api/curiosity', (req, res, next) => {
+  // Restore full path: /latest -> /api/curiosity/latest
+  const originalUrl = req.url;
+  req.url = '/api/curiosity' + req.url;
+  const proxy = createProxyMiddleware({
+    ...roverProxyConfig,
+    onProxyReq: (proxyReq) => {
+      console.log(`[PROXY] ${req.method} ${originalUrl} -> http://127.0.0.1:4001${req.url}`);
+    }
+  });
+  proxy(req, res, next);
+});
+
+app.use('/api/perseverance', (req, res, next) => {
+  const originalUrl = req.url;
+  req.url = '/api/perseverance' + req.url;
+  const proxy = createProxyMiddleware({
+    ...roverProxyConfig,
+    onProxyReq: (proxyReq) => {
+      console.log(`[PROXY] ${req.method} ${originalUrl} -> http://127.0.0.1:4001${req.url}`);
+    }
+  });
+  proxy(req, res, next);
+});
+
+// Proxy for image files served by rover media service
+// When Express matches /files, it strips the prefix from req.url
+// We need to restore it so the proxy forwards the full path to the target service
+app.use('/files', (req, res, next) => {
+  // Restore full path: /curiosity/... -> /files/curiosity/...
+  const originalUrl = req.url;
+  req.url = '/files' + req.url;
+  const proxy = createProxyMiddleware({
+    target: 'http://127.0.0.1:4001',
     changeOrigin: true,
-    logLevel: 'info',
+    logLevel: 'debug',
+    onProxyReq: (proxyReq) => {
+      console.log(`[FILES PROXY] ${req.method} ${originalUrl} -> http://127.0.0.1:4001${req.url}`);
+    },
+    onProxyRes: (proxyRes) => {
+      console.log(`[FILES PROXY] Response: ${proxyRes.statusCode} for ${req.url}`);
+    },
     onError: (err, req, res) => {
-      console.error('Proxy error (Rover media):', err.message);
+      console.error('[FILES PROXY ERROR]', err.message);
+      console.error('[FILES PROXY ERROR] Request was:', req.method, originalUrl);
       if (!res.headersSent) {
         res.status(502).json({ error: 'Rover media service unavailable on port 4001.' });
       }
     }
-  })
-);
+  });
+  proxy(req, res, next);
+});
+
+// ---------------------------
+// Static files (AFTER proxies)
+// ---------------------------
+app.use(express.static('public'));
 
 // ---------------------------
 // Body parsers (AFTER proxies)

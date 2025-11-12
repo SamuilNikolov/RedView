@@ -1,3 +1,4 @@
+<!-- public/curiosity.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,10 +11,10 @@
         .iframe-wrap {
             position: relative;
             width: 100%;
-            padding-top: 56.25%; /* 16:9 */
+            padding-top: 56.25%;
             overflow: hidden;
-            border-radius: 1rem; /* rounded-2xl */
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); /* shadow-2xl */
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
             border: 1px solid rgba(255,255,255,0.08);
             background: #0b0b0b;
         }
@@ -146,11 +147,11 @@
     </div>
 
     <!-- Scripts -->
-    <script src="js/apiService.js"></script>
+    <!-- make script path absolute so it works on /curiosity/ too -->
+    <script src="/js/apiService.js"></script>
     <script>
         const api = new MarsRoverAPI();
         
-        // Load images when page loads
         document.addEventListener('DOMContentLoaded', loadImages);
         
         async function loadImages() {
@@ -158,14 +159,12 @@
             const error = document.getElementById('error');
             const imageGrid = document.getElementById('image-grid');
             
-            // Show loading, hide others
             loading.classList.remove('hidden');
             error.classList.add('hidden');
             imageGrid.classList.add('hidden');
             
             try {
                 const data = await api.getLatestCuriosityImages();
-                
                 if (data.latest_photos && data.latest_photos.length > 0) {
                     displayImages(data.latest_photos);
                 } else {
@@ -179,45 +178,32 @@
         function displayImages(photos) {
             const loading = document.getElementById('loading');
             const imageGrid = document.getElementById('image-grid');
-            
-            // Hide loading
             loading.classList.add('hidden');
-            
-            // Clear previous images
             imageGrid.innerHTML = '';
-            
-            // Display all images
-            const imagesToShow = photos;
-            
-            imagesToShow.forEach(photo => {
-                const imageCard = createImageCard(photo);
-                imageGrid.appendChild(imageCard);
-            });
-            
-            // Show grid
+            photos.forEach(photo => imageGrid.appendChild(createImageCard(photo)));
             imageGrid.classList.remove('hidden');
         }
         
         function createImageCard(photo) {
+            const title = (photo.camera && (photo.camera.full_name || photo.camera.name)) || 'Unknown camera';
+            const when = photo.earth_date ? new Date(photo.earth_date).toLocaleDateString() : '—';
             const card = document.createElement('div');
             card.className = 'bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300';
-            
             card.innerHTML = `
                 <div class="aspect-w-16 aspect-h-12">
                     <img 
                         src="${photo.img_src}" 
-                        alt="Mars surface image from Curiosity"
+                        alt="Mars surface image from ${title}"
                         class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
                         loading="lazy"
-                        onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzY2NjY2NiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIG5vdCBhdmFpbGFibGU8L3RleHQ+PC9zdmc+'"
+                        onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSBBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzY2NjY2NiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIG5vdCBhdmFpbGFibGU8L3RleHQ+PC9zdmc+'"
                     >
                 </div>
                 <div class="p-3">
-                    <h4 class="font-semibold text-gray-900 text-sm mb-1">${photo.camera.full_name}</h4>
-                    <p class="text-xs text-gray-600">Sol ${photo.sol} • ${new Date(photo.earth_date).toLocaleDateString()}</p>
+                    <h4 class="font-semibold text-gray-900 text-sm mb-1">${title}</h4>
+                    <p class="text-xs text-gray-600">Sol ${photo.sol} • ${when}</p>
                 </div>
             `;
-            
             return card;
         }
         
@@ -225,7 +211,6 @@
             const loading = document.getElementById('loading');
             const error = document.getElementById('error');
             const errorMessage = document.getElementById('error-message');
-            
             loading.classList.add('hidden');
             errorMessage.textContent = message;
             error.classList.remove('hidden');
@@ -233,4 +218,3 @@
     </script>
 </body>
 </html>
-    
