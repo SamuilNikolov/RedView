@@ -24,6 +24,33 @@
             position: relative;
         }
 
+        #backButton {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 101;
+            background: rgba(17, 17, 17, 0.95);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 10px 16px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+            color: #eee;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        #backButton:hover {
+            background: rgba(30, 30, 30, 0.95);
+            border-color: #444;
+            transform: translateY(-2px);
+        }
+
         #controls {
             position: absolute;
             top: 20px;
@@ -36,6 +63,7 @@
             backdrop-filter: blur(10px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
             max-width: 350px;
+            margin-top: 60px;
         }
 
         #controls h1 {
@@ -150,10 +178,18 @@
         }
 
         @media (max-width: 768px) {
+            #backButton {
+                top: 10px;
+                left: 10px;
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+
             #controls {
                 max-width: calc(100vw - 40px);
                 top: 10px;
                 left: 10px;
+                margin-top: 50px;
             }
 
             .preview-panel {
@@ -167,6 +203,11 @@
 </head>
 <body>
     <div id="container"></div>
+
+    <a href="/" id="backButton">
+        <span>←</span>
+        <span>Back to Main</span>
+    </a>
 
     <div id="controls">
         <h1>AI Depth Map</h1>
@@ -291,13 +332,24 @@
                 });
 
                 if (!response.ok) {
-                    throw new Error(`Server error: ${response.status}`);
+                    const errorText = await response.text();
+                    let errorData;
+                    try {
+                        errorData = JSON.parse(errorText);
+                    } catch (e) {
+                        errorData = { error: `Server error: ${response.status}` };
+                    }
+                    throw new Error(errorData.error || `Server error: ${response.status}`);
                 }
 
                 const data = await response.json();
 
                 if (data.error) {
                     throw new Error(data.error);
+                }
+
+                if (!data.depth_map) {
+                    throw new Error('No depth map received from server');
                 }
 
                 // Load depth map preview
@@ -311,6 +363,7 @@
             } catch (error) {
                 console.error('Error:', error);
                 showStatus(`Error: ${error.message}`, 'error');
+                alert('The file upload went wrong. Please try again.');
             } finally {
                 generateBtn.disabled = false;
                 generateBtn.textContent = 'Generate 3D Depth Map';
