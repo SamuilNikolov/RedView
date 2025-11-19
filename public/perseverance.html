@@ -66,13 +66,35 @@
           </div>
         </div>
 
+        <!-- NASA 3D Model -->
+        <section class="mb-8">
+          <div class="glass rounded-2xl p-5 md:p-6 mb-4">
+            <div>
+              <h3 class="text-2xl font-bold text-gray-900 mb-2">Perseverance Rover 3D Model</h3>
+              <p class="text-gray-700">Explore an interactive 3D model of the Perseverance rover.</p>
+            </div>
+          </div>
+          <div class="iframe-wrap" style="padding-top: 50%;">
+            <canvas id="glb-viewer" style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #0a0a0a;"></canvas>
+            <div id="glb-loading" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: white; font-family: sans-serif; z-index: 10;">
+              <div style="text-align: center;">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white mb-2"></div>
+                <p>Loading 3D model...</p>
+              </div>
+            </div>
+          </div>
+          <p class="text-xs text-gray-500 mt-3 text-center">
+            Credit: NASA/JPL-Caltech • Use mouse to rotate, scroll to zoom, right-click to pan
+          </p>
+        </section>
+
         <!-- Embedded ArcGIS Scene (ABOVE image search) -->
         <section class="mb-8">
           <div class="glass rounded-2xl p-5 md:p-6 mb-4">
             <div class="flex items-center justify-between">
               <div>
                 <h3 class="text-2xl font-bold text-gray-900">Interactive Path Viewer</h3>
-                <p class="text-gray-700">Explore Perseverance’s traverse in 3D on Mars terrain.</p>
+                <p class="text-gray-700">Explore Perseverance's traverse in 3D on Mars terrain.</p>
               </div>
               <a href="arcgis-perseverance.html" class="hidden md:inline-flex items-center px-3 py-2 rounded-lg bg-gray-900 text-white hover:bg-gray-800 transition-colors">
                 Open Fullscreen
@@ -84,12 +106,25 @@
           </div>
           <div class="iframe-wrap">
             <iframe
+              id="arcgis-iframe-perseverance"
               src="arcgis-perseverance.html"
               title="Perseverance Rover Path - ArcGIS 3D Scene"
               loading="lazy"
               allowfullscreen
               referrerpolicy="no-referrer-when-downgrade">
             </iframe>
+          </div>
+          <div class="text-center mt-4">
+            <button 
+              id="capture-btn-perseverance"
+              onclick="captureArcGISView('perseverance')"
+              class="inline-flex items-center px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              </svg>
+              Capture Image of View
+            </button>
           </div>
           <p class="text-xs text-gray-500 mt-3 text-center">
             Data sources: NASA / JPL / USGS / Esri • Use mouse/touch to pan, tilt, and zoom
@@ -98,15 +133,56 @@
 
         <!-- Image Gallery Section -->
         <div class="bg-gray-50 rounded-xl p-6 border-2 border-dashed border-gray-300">
-          <h3 class="text-2xl font-bold text-gray-900 mb-4">Latest Images from Perseverance</h3>
+          <h3 class="text-2xl font-bold text-gray-900 mb-4">Images from Perseverance</h3>
           <p class="text-gray-700 mb-6">
             NASA's Perseverance rover is investigating Jezero Crater, searching for signs of ancient life and caching samples for return to Earth.
           </p>
 
+          <!-- Filter Controls -->
+          <div class="bg-white rounded-lg p-4 mb-6 border border-gray-200">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+              <div>
+                <label for="camera-select" class="block text-sm font-medium text-gray-700 mb-2">Camera</label>
+                <select id="camera-select" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-800 focus:border-gray-800">
+                  <option value="">All Cameras</option>
+                  <option value="Engineering cam">Engineering cam</option>
+                  <option value="Entry Descent and Landing (EDL) cam">Entry Descent and Landing (EDL) cam</option>
+                  <option value="Mastcam">Mastcam</option>
+                  <option value="MEDA Skycam">MEDA Skycam</option>
+                  <option value="Navcam">Navcam</option>
+                  <option value="PIXL Microcam">PIXL Microcam</option>
+                </select>
+              </div>
+              <div>
+                <label for="sol-select" class="block text-sm font-medium text-gray-700 mb-2">Sol</label>
+                <select id="sol-select" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-800 focus:border-gray-800">
+                  <option value="">All Sols</option>
+                  <option value="1">Sol 1</option>
+                  <option value="2">Sol 2</option>
+                </select>
+              </div>
+              <div>
+                <button onclick="requestImages()" class="w-full px-6 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium">
+                  Request Imagery
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Placeholder State -->
+          <div id="placeholder" class="text-center py-12">
+            <div class="text-gray-400 mb-2">
+              <svg class="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <p class="text-gray-600 text-lg font-medium">Request images using the menu above</p>
+          </div>
+
           <!-- Loading -->
-          <div id="loading" class="text-center py-8">
+          <div id="loading" class="hidden text-center py-8">
             <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-            <p class="mt-2 text-gray-600">Loading latest images...</p>
+            <p class="mt-2 text-gray-600">Loading images...</p>
           </div>
 
           <!-- Error -->
@@ -118,9 +194,19 @@
             </div>
             <p class="text-red-600 font-semibold">Failed to load images</p>
             <p class="text-gray-600 mt-1" id="error-message">Please try again later.</p>
-            <button onclick="loadImages()" class="mt-4 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors">
+            <button onclick="requestImages()" class="mt-4 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors">
               Retry
             </button>
+          </div>
+
+          <!-- No Images State -->
+          <div id="no-images" class="hidden text-center py-12">
+            <div class="text-gray-400 mb-2">
+              <svg class="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <p class="text-gray-600 text-lg font-medium">There are no images based on the given parameters</p>
           </div>
 
           <!-- Image Grid -->
@@ -142,49 +228,264 @@
   </div>
 
   <!-- Scripts -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module">
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    
+    (function() {
+      const canvas = document.getElementById('glb-viewer');
+      const loadingDiv = document.getElementById('glb-loading');
+      
+      if (!canvas) return;
+      
+      // Scene setup
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0a0a0a);
+    
+    // Camera
+    const camera = new THREE.PerspectiveCamera(
+      45,
+      canvas.clientWidth / canvas.clientHeight,
+      0.1,
+      1000
+    );
+    camera.position.set(5, 5, 5);
+    
+    // Renderer
+    const renderer = new THREE.WebGLRenderer({ 
+      canvas: canvas, 
+      antialias: true,
+      alpha: true
+    });
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    scene.add(ambientLight);
+    
+    const directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight1.position.set(10, 10, 5);
+    directionalLight1.castShadow = true;
+    scene.add(directionalLight1);
+    
+    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.4);
+    directionalLight2.position.set(-10, 5, -5);
+    scene.add(directionalLight2);
+    
+    // Controls
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.minDistance = 2;
+    controls.maxDistance = 20;
+    controls.enablePan = true;
+    
+    // Load GLB model
+    const loader = new GLTFLoader();
+    loader.load(
+      'perseverance.glb',
+      function(gltf) {
+        const model = gltf.scene;
+        
+        // Center and scale model
+        const box = new THREE.Box3().setFromObject(model);
+        const center = box.getCenter(new THREE.Vector3());
+        const size = box.getSize(new THREE.Vector3());
+        const maxDim = Math.max(size.x, size.y, size.z);
+        const scale = 3 / maxDim;
+        
+        model.scale.multiplyScalar(scale);
+        model.position.sub(center.multiplyScalar(scale));
+        
+        // Enable shadows and improve material rendering
+        model.traverse(function(child) {
+          if (child.isMesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+            // Ensure materials are properly lit
+            if (child.material) {
+              child.material.needsUpdate = true;
+            }
+          }
+        });
+        
+        scene.add(model);
+        
+        // Hide loading
+        if (loadingDiv) {
+          loadingDiv.style.display = 'none';
+        }
+        
+        // Adjust camera to view model
+        camera.lookAt(0, 0, 0);
+        controls.update();
+      },
+      function(progress) {
+        // Progress callback
+        if (progress.total > 0) {
+          const percent = (progress.loaded / progress.total * 100).toFixed(0);
+          if (loadingDiv) {
+            const p = loadingDiv.querySelector('p');
+            if (p) p.textContent = `Loading 3D model... ${percent}%`;
+          }
+        }
+      },
+      function(error) {
+        console.error('Error loading GLB:', error);
+        if (loadingDiv) {
+          loadingDiv.innerHTML = '<p style="color: #ef4444;">Error loading 3D model. Please refresh the page.</p>';
+        }
+      }
+    );
+    
+    // Animation loop
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+    
+    // Handle resize
+    function handleResize() {
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    }
+    
+    window.addEventListener('resize', handleResize);
+    })();
+  </script>
   <script src="js/apiService.js"></script>
   <script>
-    // Use MarsRoverAPI if it exposes a Perseverance method; otherwise fetch directly.
     const api = new MarsRoverAPI();
-    document.addEventListener('DOMContentLoaded', loadImages);
 
-    async function fetchLatest() {
-      if (typeof api.getLatestPerseveranceImages === 'function') {
-        return await api.getLatestPerseveranceImages();
+    // Capture ArcGIS view screenshot
+    function captureArcGISView(rover) {
+      const iframeId = `arcgis-iframe-${rover}`;
+      const buttonId = `capture-btn-${rover}`;
+      const iframe = document.getElementById(iframeId);
+      const button = document.getElementById(buttonId);
+      
+      if (!iframe || !iframe.contentWindow) {
+        alert('Iframe not ready. Please wait for the map to load.');
+        return;
       }
-      const r = await fetch('/api/perseverance/latest');
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      return await r.json();
+
+      // Disable button during capture
+      button.disabled = true;
+      button.classList.add('opacity-50', 'cursor-not-allowed');
+      const originalText = button.innerHTML;
+      button.innerHTML = '<div class="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>Capturing...';
+
+      // Send message to iframe to capture screenshot
+      iframe.contentWindow.postMessage({ type: 'CAPTURE_SCREENSHOT' }, '*');
+
+      // Listen for response
+      const messageHandler = (event) => {
+        if (event.data && event.data.type === 'SCREENSHOT_RESULT') {
+          window.removeEventListener('message', messageHandler);
+          
+          // Download the image
+          downloadImage(event.data.dataUrl, `perseverance-path-view-${Date.now()}.png`);
+          
+          // Re-enable button
+          button.disabled = false;
+          button.classList.remove('opacity-50', 'cursor-not-allowed');
+          button.innerHTML = originalText;
+        } else if (event.data && event.data.type === 'SCREENSHOT_ERROR') {
+          window.removeEventListener('message', messageHandler);
+          alert('Failed to capture screenshot: ' + event.data.error);
+          
+          // Re-enable button
+          button.disabled = false;
+          button.classList.remove('opacity-50', 'cursor-not-allowed');
+          button.innerHTML = originalText;
+        }
+      };
+
+      window.addEventListener('message', messageHandler);
+
+      // Timeout after 10 seconds
+      setTimeout(() => {
+        window.removeEventListener('message', messageHandler);
+        button.disabled = false;
+        button.classList.remove('opacity-50', 'cursor-not-allowed');
+        button.innerHTML = originalText;
+      }, 10000);
     }
 
-    async function loadImages() {
+    // Download image function
+    function downloadImage(dataUrl, filename) {
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    async function requestImages() {
+      const camera = document.getElementById('camera-select').value;
+      const sol = document.getElementById('sol-select').value;
+      const placeholder = document.getElementById('placeholder');
       const loading = document.getElementById('loading');
       const error = document.getElementById('error');
-      const grid = document.getElementById('image-grid');
+      const imageGrid = document.getElementById('image-grid');
+      const noImages = document.getElementById('no-images');
 
+      // Hide all states
+      placeholder.classList.add('hidden');
       loading.classList.remove('hidden');
       error.classList.add('hidden');
-      grid.classList.add('hidden');
+      imageGrid.classList.add('hidden');
+      noImages.classList.add('hidden');
 
       try {
-        const data = await fetchLatest();
-        if (data.latest_photos && data.latest_photos.length) {
-          displayImages(data.latest_photos);
+        let photos = [];
+
+        // If both camera and sol are selected, use filtered endpoint
+        if (camera && sol) {
+          const data = await api.getImagesByCameraAndSol('perseverance', camera, sol);
+          photos = data.photos || [];
         } else {
-          throw new Error('No recent images found');
+          // Otherwise, get latest images
+          const data = await api.getLatestPerseveranceImages();
+          photos = data.latest_photos || [];
         }
-      } catch (e) {
-        showError(e.message);
+
+        loading.classList.add('hidden');
+
+        if (photos.length > 0) {
+          displayImages(photos);
+        } else {
+          noImages.classList.remove('hidden');
+        }
+      } catch (err) {
+        showError(err.message);
       }
     }
 
     function displayImages(photos) {
-      document.getElementById('loading').classList.add('hidden');
-      const grid = document.getElementById('image-grid');
-      grid.innerHTML = '';
-
-      photos.forEach(p => grid.appendChild(createImageCard(p)));
-      grid.classList.remove('hidden');
+      const imageGrid = document.getElementById('image-grid');
+      imageGrid.innerHTML = '';
+      photos.forEach(photo => imageGrid.appendChild(createImageCard(photo)));
+      imageGrid.classList.remove('hidden');
     }
 
     function createImageCard(photo) {
@@ -212,9 +513,12 @@
     }
 
     function showError(message) {
-      document.getElementById('loading').classList.add('hidden');
-      document.getElementById('error-message').textContent = message;
-      document.getElementById('error').classList.remove('hidden');
+      const loading = document.getElementById('loading');
+      const error = document.getElementById('error');
+      const errorMessage = document.getElementById('error-message');
+      loading.classList.add('hidden');
+      errorMessage.textContent = message;
+      error.classList.remove('hidden');
     }
   </script>
 </body>

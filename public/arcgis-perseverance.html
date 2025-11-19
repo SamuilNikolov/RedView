@@ -88,6 +88,43 @@
                 loadRoverPath();
             });
 
+            // Expose screenshot function to parent window
+            window.captureScreenshot = function() {
+                return new Promise((resolve, reject) => {
+                    if (!view) {
+                        reject(new Error('View not ready'));
+                        return;
+                    }
+                    view.takeScreenshot({
+                        width: view.width,
+                        height: view.height,
+                        format: "png"
+                    }).then((screenshot) => {
+                        resolve(screenshot.dataUrl);
+                    }).catch((error) => {
+                        reject(error);
+                    });
+                });
+            };
+
+            // Listen for postMessage requests from parent
+            window.addEventListener('message', async (event) => {
+                if (event.data && event.data.type === 'CAPTURE_SCREENSHOT') {
+                    try {
+                        const dataUrl = await window.captureScreenshot();
+                        event.source.postMessage({
+                            type: 'SCREENSHOT_RESULT',
+                            dataUrl: dataUrl
+                        }, event.origin);
+                    } catch (error) {
+                        event.source.postMessage({
+                            type: 'SCREENSHOT_ERROR',
+                            error: error.message
+                        }, event.origin);
+                    }
+                }
+            });
+
             // Add click handler for waypoints
             view.on("click", (event) => {
                 view.hitTest(event).then((response) => {
