@@ -4,34 +4,133 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RedView - Mars Rover Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="mars-bg min-h-screen">
-    <div class="container mx-auto px-4 py-8">
-        <!-- Header -->
-        <header class="text-center mb-12 fade-in-up">
-            <h1 class="text-5xl md:text-6xl font-bold text-white mb-4 tracking-wider">
-                RedView
-            </h1>
-            <p class="text-xl md:text-2xl text-gray-200 font-light tracking-wide">
-                Explore Mars through the eyes of our rovers
-            </p>
-        </header>
+    <!-- Hero Section with Futuristic Intro -->
+    <div class="hero-section relative min-h-screen flex items-center justify-center overflow-hidden">
+        <!-- Animated Background Particles -->
+        <div class="particles absolute inset-0"></div>
+        
+        <!-- Main Content -->
+        <div class="container mx-auto px-4 py-8 relative z-10">
+            <!-- Hero Text -->
+            <div class="text-center mb-16">
+                <div class="hero-title-wrapper mb-6">
+                    <h1 class="hero-title text-6xl md:text-8xl font-bold text-white mb-4 tracking-tight">
+                        <span class="text-gradient">RedView</span>
+                    </h1>
+                    <div class="hero-subtitle-wrapper">
+                        <p class="hero-subtitle text-2xl md:text-3xl text-gray-200 font-light tracking-wide mb-8">
+                            <span class="typing-text">Exploring the Red Planet</span>
+                            <span class="cursor-blink">|</span>
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Introduction Text -->
+                <div class="intro-text max-w-4xl mx-auto mb-12 space-y-6">
+                    <p class="text-lg md:text-xl text-gray-300 leading-relaxed fade-in-delay-1">
+                        RedView is a cutting-edge platform that brings you closer to Mars than ever before. 
+                        Experience the Martian landscape through the eyes of NASA's most advanced rovers, 
+                        <span class="text-white font-semibold">Curiosity</span> and <span class="text-white font-semibold">Perseverance</span>.
+                    </p>
+                    <p class="text-base md:text-lg text-gray-400 leading-relaxed fade-in-delay-2">
+                        Navigate through thousands of high-resolution images, explore interactive 3D models, 
+                        and visualize rover traverses across the Martian terrain. Every pixel tells a story 
+                        of discovery, every sol brings us closer to understanding our neighboring world.
+                    </p>
+                    <p class="text-base md:text-lg text-gray-400 leading-relaxed fade-in-delay-3">
+                        Built with modern web technologies and powered by real mission data, RedView 
+                        transforms raw scientific imagery into an immersive exploration experience.
+                    </p>
+                </div>
+                
+                <!-- Feature Highlights -->
+                <div class="features-grid grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-16 fade-in-delay-4">
+                    <div class="feature-card glass-card p-6 rounded-xl">
+                        <div class="feature-icon mb-4">
+                            <svg class="w-12 h-12 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Real-Time Data</h3>
+                        <p class="text-gray-300 text-sm">Access the latest images directly from Mars rovers</p>
+                    </div>
+                    <div class="feature-card glass-card p-6 rounded-xl">
+                        <div class="feature-icon mb-4">
+                            <svg class="w-12 h-12 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">3D Visualization</h3>
+                        <p class="text-gray-300 text-sm">Interactive models and terrain exploration</p>
+                    </div>
+                    <div class="feature-card glass-card p-6 rounded-xl">
+                        <div class="feature-icon mb-4">
+                            <svg class="w-12 h-12 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">AI-Powered</h3>
+                        <p class="text-gray-300 text-sm">Advanced depth mapping and analysis tools</p>
+                    </div>
+                </div>
+                
+                <!-- GitHub Link -->
+                <div class="github-link fade-in-delay-5 mb-8">
+                    <a href="https://github.com/SamuilNikolov/RedView" target="_blank" rel="noopener noreferrer" 
+                       class="inline-flex items-center px-6 py-3 glass-card rounded-lg hover:bg-white/10 transition-all duration-300 group">
+                        <svg class="w-5 h-5 mr-3 text-white group-hover:text-orange-400 transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482C19.138 20.197 22 16.425 22 12.017 22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-white font-medium group-hover:text-orange-400 transition-colors">View on GitHub</span>
+                        <svg class="w-4 h-4 ml-2 text-white group-hover:text-orange-400 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                    </a>
+                </div>
+                
+                <!-- Scroll Indicator -->
+                <div class="scroll-indicator fade-in-delay-5">
+                    <div class="scroll-arrow"></div>
+                    <p class="text-gray-400 text-sm mt-4">Explore Rovers</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content Section -->
+    <div class="main-content-section container mx-auto px-4 py-8 relative z-10">
+        
+        <!-- Section Header -->
+        <div class="text-center mb-12">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                <span class="text-gradient">Explore Rovers</span>
+            </h2>
+            <p class="text-gray-300 text-lg">Select a rover to begin your Martian journey</p>
+        </div>
         
         <!-- Rover Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
             <!-- Curiosity Card -->
-            <a href="/curiosity" class="rover-card group">
-                <div class="bg-white rounded-2xl shadow-xl overflow-hidden h-64 relative">
-                    <div class="h-40 bg-cover bg-center" 
+            <a href="/curiosity" class="rover-card-futuristic group">
+                <div class="glass-card rounded-2xl overflow-hidden h-full relative border border-white/20 hover:border-orange-400/50 transition-all duration-300">
+                    <div class="h-48 bg-cover bg-center relative" 
                          style="background-image: url('https://d2cbg94ubxgsnp.cloudfront.net/Pictures/2000xAny/5/8/7/540587_pia14165orig_655728_crop_crop_crop.jpg');">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="status-indicator bg-green-500"></span>
+                        </div>
                     </div>
                     <div class="p-6">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Curiosity</h3>
-                        <p class="text-gray-600 text-sm uppercase tracking-wider">Mars Science Laboratory</p>
-                        <div class="mt-4 flex items-center text-sm text-gray-500">
-                            <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-orange-400 transition-colors">Curiosity</h3>
+                        <p class="text-gray-300 text-sm uppercase tracking-wider mb-4">Mars Science Laboratory</p>
+                        <div class="flex items-center text-sm text-gray-400">
+                            <svg class="w-4 h-4 mr-2 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
                             Active since 2012
                         </div>
                     </div>
@@ -39,17 +138,22 @@
             </a>
             
             <!-- Perseverance Card -->
-            <a href="/perseverance" class="rover-card group">
-                <div class="bg-white rounded-2xl shadow-xl overflow-hidden h-64 relative">
-                    <div class="h-40 bg-cover bg-center" 
+            <a href="/perseverance" class="rover-card-futuristic group">
+                <div class="glass-card rounded-2xl overflow-hidden h-full relative border border-white/20 hover:border-orange-400/50 transition-all duration-300">
+                    <div class="h-48 bg-cover bg-center relative" 
                          style="background-image: url('https://assets.science.nasa.gov/content/dam/science/psd/mars/resources/detail_files/2/5/25790_First_selfie-1200.gif');">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="status-indicator bg-green-500"></span>
+                        </div>
                     </div>
                     <div class="p-6">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Perseverance</h3>
-                        <p class="text-gray-600 text-sm uppercase tracking-wider">Mars 2020 Mission</p>
-                        <div class="mt-4 flex items-center text-sm text-gray-500">
-                            <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-orange-400 transition-colors">Perseverance</h3>
+                        <p class="text-gray-300 text-sm uppercase tracking-wider mb-4">Mars 2020 Mission</p>
+                        <div class="flex items-center text-sm text-gray-400">
+                            <svg class="w-4 h-4 mr-2 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
                             Active since 2021
                         </div>
                     </div>
@@ -57,17 +161,23 @@
             </a>
             
             <!-- AI Depth Card -->
-            <a href="/ai-depth" target="_blank" class="rover-card group">
-                <div class="bg-white rounded-2xl shadow-xl overflow-hidden h-64 relative">
-                    <div class="h-40 bg-cover bg-center" 
+            <a href="/ai-depth" target="_blank" class="rover-card-futuristic group">
+                <div class="glass-card rounded-2xl overflow-hidden h-full relative border border-white/20 hover:border-orange-400/50 transition-all duration-300">
+                    <div class="h-48 bg-cover bg-center relative" 
                          style="background-image: url('https://cdn-thumbnails.huggingface.co/social-thumbnails/spaces/ameerazam08/zoe-depth.png');">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                        <div class="absolute top-4 right-4">
+                            <span class="status-indicator bg-blue-500"></span>
+                        </div>
                     </div>
                     <div class="p-6">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">AI Depth Map</h3>
-                        <p class="text-gray-600 text-sm uppercase tracking-wider">3D Terrain Generator</p>
-                        <div class="mt-4 flex items-center text-sm text-gray-500">
-                            <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                        <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-orange-400 transition-colors">AI Depth Map</h3>
+                        <p class="text-gray-300 text-sm uppercase tracking-wider mb-4">3D Terrain Generator</p>
+                        <div class="flex items-center text-sm text-gray-400">
+                            <svg class="w-4 h-4 mr-2 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
+                                <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"></path>
+                            </svg>
                             Upload & Generate
                         </div>
                     </div>
@@ -76,9 +186,67 @@
         </div>
         
         <!-- Footer -->
-        <footer class="text-center text-gray-300">
-            <p class="text-sm">Built for Mars exploration and scientific discovery</p>
+        <footer class="text-center text-gray-300 mt-16 mb-8">
+            <p class="text-sm mb-2">Built for Mars exploration and scientific discovery</p>
+            <p class="text-xs text-gray-500 mb-4">Powered by NASA/JPL-Caltech mission data</p>
+            <a href="https://github.com/SamuilNikolov/RedView" target="_blank" rel="noopener noreferrer" 
+               class="inline-flex items-center text-xs text-gray-400 hover:text-orange-400 transition-colors">
+                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482C19.138 20.197 22 16.425 22 12.017 22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path>
+                </svg>
+                GitHub Repository
+            </a>
         </footer>
     </div>
+    
+    <script>
+        // Typing animation for hero subtitle
+        const typingTexts = [
+            "Exploring the Red Planet",
+            "Discovering Ancient Life",
+            "Mapping Martian Terrain",
+            "Unveiling Mars Secrets"
+        ];
+        let currentTextIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        
+        function typeText() {
+            const element = document.querySelector('.typing-text');
+            if (!element) return;
+            
+            const currentText = typingTexts[currentTextIndex];
+            
+            if (isDeleting) {
+                element.textContent = currentText.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                element.textContent = currentText.substring(0, charIndex + 1);
+                charIndex++;
+            }
+            
+            if (!isDeleting && charIndex === currentText.length) {
+                setTimeout(() => isDeleting = true, 2000);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                currentTextIndex = (currentTextIndex + 1) % typingTexts.length;
+            }
+            
+            setTimeout(typeText, isDeleting ? 50 : 100);
+        }
+        
+        // Start typing animation after page load
+        window.addEventListener('load', () => {
+            setTimeout(typeText, 1000);
+        });
+        
+        // Smooth scroll to rovers section
+        document.querySelector('.scroll-indicator')?.addEventListener('click', () => {
+            document.querySelector('.hero-section').nextElementSibling?.scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    </script>
 </body>
 </html>

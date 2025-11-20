@@ -83,21 +83,42 @@ module.exports.scanLatestByRover = async function scanLatestByRover(cfg, rover) 
   const roverAbs = path.join(cfg.mediaRoot, rover);
   await ensureExists(roverAbs);
 
+  // First, find the latest sol across all cameras
   const cameras = await listDirs(roverAbs);
-  const promises = [];
-  let id = 1;
+  let overallLatestSol = 0;
 
   for (const cam of cameras) {
     const camAbs = path.join(roverAbs, cam);
     const latest = await latestSolDir(camAbs);
-    if (!latest) continue;
-
-    for (const file of latest.files) {
-      const abs = path.join(latest.dir, file);
-      promises.push(photoOf(abs, rover, cam, latest.sol, cfg, id++));
+    if (latest && latest.sol > overallLatestSol) {
+      overallLatestSol = latest.sol;
     }
   }
-  return Promise.all(promises);
+
+  // If no sol found, return empty array
+  if (overallLatestSol === 0) {
+    return [];
+  }
+
+  // Now get all images from that latest sol across all cameras
+  const photos = [];
+  let id = 1;
+
+  for (const cam of cameras) {
+    const dir = path.join(roverAbs, cam, String(overallLatestSol));
+    try {
+      await ensureExists(dir);
+      const files = await listImages(dir);
+      for (const f of files) {
+        photos.push(await photoOf(path.join(dir, f), rover, cam, overallLatestSol, cfg, id++));
+      }
+    } catch {
+      // Camera doesn't have this sol, skip it
+      continue;
+    }
+  }
+
+  return photos;
 };
 
 module.exports.scanBySolAndCamera = async function scanBySolAndCamera(
@@ -150,4 +171,51 @@ module.exports.scanAllByRover = async function scanAllByRover(cfg, rover, opts =
     return { photos: photos.slice(offset, offset + limit), total };
   }
   return { photos, total };
+};
+
+// Get all photos for a specific sol across all cameras
+module.exports.scanBySol = async function scanBySol(cfg, rover, sol) {
+  if (sol == null) throw new Error('sol param is required');
+  
+  const roverAbs = path.join(cfg.mediaRoot, rover);
+  await ensureExists(roverAbs);
+
+  const cameras = await listDirs(roverAbs);
+  const photos = [];
+  let id = 1;
+
+  for (const cam of cameras) {
+    const dir = path.join(roverAbs, cam, String(sol));
+    try {
+      await ensureExists(dir);
+      const files = await listImages(dir);
+      for (const f of files) {
+        photos.push(await photoOf(path.join(dir, f), rover, cam, parseInt(sol, 10), cfg, id++));
+      }
+    } catch {
+      // Camera doesn't have this sol, skip it
+      continue;
+    }
+  }
+
+  return photos;
+};
+
+// Get the latest sol number available for a rover
+module.exports.getLatestSol = async function getLatestSol(cfg, rover) {
+  const roverAbs = path.join(cfg.mediaRoot, rover);
+  await ensureExists(roverAbs);
+
+  const cameras = await listDirs(roverAbs);
+  let latestSol = 0;
+
+  for (const cam of cameras) {
+    const camAbs = path.join(roverAbs, cam);
+    const latest = await latestSolDir(camAbs);
+    if (latest && latest.sol > latestSol) {
+      latestSol = latest.sol;
+    }
+  }
+
+  return latestSol > 0 ? latestSol : null;
 };
