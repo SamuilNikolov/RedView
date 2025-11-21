@@ -8,6 +8,69 @@ class MarsRoverAPI {
     // Use the Express proxy so the front-end stays same-origin
     this.baseURL = '/api';
     this.timeout = 5000; // 5 seconds
+    this.config = null; // Will be loaded on first use
+  }
+
+  /**
+   * Load API configuration (camera mappings, API mode)
+   * @returns {Promise<Object>}
+   */
+  async loadConfig() {
+    if (this.config) return this.config;
+    
+    try {
+      const response = await fetch('/api/config');
+      if (!response.ok) {
+        throw new Error('Failed to load API config');
+      }
+      this.config = await response.json();
+      return this.config;
+    } catch (error) {
+      console.error('Failed to load API config, assuming local DB mode:', error);
+      // Default to local DB mode if config fails
+      this.config = { useRailsAPI: false };
+      return this.config;
+    }
+  }
+
+  /**
+   * Map camera name from local DB format to Rails API format
+   * @param {string} rover - Rover name
+   * @param {string} camera - Camera name (local DB format)
+   * @returns {string} Camera name in appropriate format
+   */
+  async mapCameraName(rover, camera) {
+    const config = await this.loadConfig();
+    
+    if (!config.useRailsAPI) {
+      // Local DB mode - return as-is
+      return camera;
+    }
+    
+    // Rails API mode - map to abbreviation
+    const mapping = config.cameraMappings[rover.toLowerCase()];
+    if (mapping && mapping[camera]) {
+      return mapping[camera];
+    }
+    
+    // If no mapping found, assume it's already in Rails API format
+    return camera;
+  }
+
+  /**
+   * Get available cameras for a rover based on current API mode
+   * @param {string} rover - Rover name (curiosity or perseverance)
+   * @returns {Promise<Array>} Array of {value, label} objects
+   */
+  async getAvailableCameras(rover) {
+    const config = await this.loadConfig();
+    const roverKey = rover.toLowerCase();
+    
+    if (config.useRailsAPI) {
+      return config.railsAPICameras[roverKey] || [];
+    } else {
+      return config.localDBCameras[roverKey] || [];
+    }
   }
 
   async getLatestImages(rover) {
@@ -53,7 +116,7 @@ class MarsRoverAPI {
   /**
    * Fetch images filtered by camera and sol
    * @param {string} rover - Rover name (curiosity or perseverance)
-   * @param {string} camera - Camera name
+   * @param {string} camera - Camera name (will be mapped if needed)
    * @param {number|string} sol - Sol number
    * @returns {Promise<{photos: Array}>}
    */
@@ -62,8 +125,11 @@ class MarsRoverAPI {
     const timeoutId = setTimeout(() => controller.abort(), this.timeout);
 
     try {
+      // Map camera name to appropriate format for current API mode
+      const mappedCamera = await this.mapCameraName(rover, camera);
+      
       const params = new URLSearchParams({
-        camera: camera,
+        camera: mappedCamera,
         sol: String(sol)
       });
       const response = await fetch(`${this.baseURL}/${encodeURIComponent(rover)}/photos?${params}`, {
